@@ -21,7 +21,7 @@ classdef TcspcData
         % HIDDENBINWIDTH
         HiddenBinWidth
         %HIDDENPOLARIZATIONANGLE
-        HiddenPolarizationAngle
+        HiddenPolarizationAngle = 44.7
     end
 
     methods
@@ -59,24 +59,29 @@ classdef TcspcData
         function polang = get.PolarizationAngle(data)
             polang = data.HiddenPolarizationAngle;
         end
+
+        function bins = get.NumberOfBins(data)
+            bins = numel(data.Data);
+        end
     end
 
     methods (Static)
-        function arr = multiSet(eps,trans,psi)
-            arguments
-                eps (:,1) {mustBePositive,mustBeFinite}
-                trans (:,:) {mustBeNonnegative,mustBeInteger}
-                psi (:,1) {mustBeInRange(psi,0,90)} = 44.7
-            end
-            assert(nargin > 0);
 
-            % Initialize array
-            ntrans = size(trans,2);
-            % Check to ensure that dimensions of eps, psi align
-            arr(1:ntrans) = TcspcData("BinWidth",eps,"PolarizationAngle",psi);
+        function multiTcspc = multiSet(args)
+            % Multiple curve constructor
+            arguments
+                args.Data (:,:) {mustBeNonnegative,mustBeInteger}
+                args.BinWidth (:,1) {mustBePositive,mustBeFinite}
+                args.PolarizationAngle (:,1) {mustBeInRange(args.PolarizationAngle,0,90)}
+            end
+
+            ntrans = size(args.Data,2);
+            argCell = namedargs2cell(args);
+            multiTcspc(1:ntrans) = TcspcData;
             for i = 1:ntrans
-                arr(i).HiddenData = trans(:,i);
-                arr(i).HiddenBinWidth = eps(i);
+                multiTcspc(i).Data = args.Data(:,i);
+                multiTcspc(i).BinWidth = args.BinWidth(i);
+                multiTcspc(i).PolarizationAngle = args.PolarizationAngle(i);
             end
         end
     end
