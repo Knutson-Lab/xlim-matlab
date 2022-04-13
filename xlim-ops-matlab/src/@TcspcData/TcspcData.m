@@ -65,24 +65,36 @@ classdef TcspcData
         end
     end
 
-    methods (Static)
+    methods
 
-        function multiTcspc = multiSet(args)
+        function multiTcspc = multiSet(multiTcspc, args)
             % Multiple curve constructor
             arguments
+                multiTcspc (:,1) TcspcData
                 args.Data (:,:) {mustBeNonnegative,mustBeInteger}
                 args.BinWidth (:,1) {mustBePositive,mustBeFinite}
-                args.PolarizationAngle (:,1) {mustBeInRange(args.PolarizationAngle,0,90)}
+                args.PolarizationAngle (:,1) {mustBeInRange(args.PolarizationAngle,0,90)} = 44.7
             end
 
-            ntrans = size(args.Data,2);
-            argCell = namedargs2cell(args);
-            multiTcspc(1:ntrans) = TcspcData;
-            for i = 1:ntrans
-                multiTcspc(i).Data = args.Data(:,i);
-                multiTcspc(i).BinWidth = args.BinWidth(i);
-                multiTcspc(i).PolarizationAngle = args.PolarizationAngle(i);
+            ntrans = numel(multiTcspc);
+
+            if(isfield(args,"Data"))
+                
             end
+
+            
+            arc = namedargs2cell(args);
+%             argCell = cell(numel(args),1,1);
+%             for i = 1:2:numel(arc)
+%                 argCell{(i+1)/2} = arc{i + 1};
+%             end
+            for i = 1:ntrans
+                multiTcspc(i).HiddenData = args.Data(:,i);
+                multiTcspc(i).HiddenBinWidth = args.BinWidth(i);
+                multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(i);
+
+%                 [multiTcspc(i).Data, multiTcspc(i).BinWidth, multiTcspc(i).PolarizationAngle] = deal(argCell);
+            end            
         end
     end
 end
