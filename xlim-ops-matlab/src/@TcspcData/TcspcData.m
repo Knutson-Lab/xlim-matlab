@@ -73,27 +73,36 @@ classdef TcspcData
                 multiTcspc (:,1) TcspcData
                 args.Data (:,:) {mustBeNonnegative,mustBeInteger}
                 args.BinWidth (:,1) {mustBePositive,mustBeFinite}
-                args.PolarizationAngle (:,1) {mustBeInRange(args.PolarizationAngle,0,90)} = 44.7
+                args.PolarizationAngle (:,1) {mustBeInRange(args.PolarizationAngle,0,90)}
             end
 
             ntrans = numel(multiTcspc);
 
-            if(isfield(args,"Data"))
+            isData = isfield(args,"Data");
+            if(isData)
+                assert(numel(args.Data) > 0);
+            end
+
+            isBinwidth = isfield(args,"BinWidth");
+            if(isBinwidth)
                 
             end
 
-            
-            arc = namedargs2cell(args);
-%             argCell = cell(numel(args),1,1);
-%             for i = 1:2:numel(arc)
-%                 argCell{(i+1)/2} = arc{i + 1};
-%             end
-            for i = 1:ntrans
-                multiTcspc(i).HiddenData = args.Data(:,i);
-                multiTcspc(i).HiddenBinWidth = args.BinWidth(i);
-                multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(i);
+            isPol = isfield(args,"PolarizationAngle");
+            if(isPol)
 
-%                 [multiTcspc(i).Data, multiTcspc(i).BinWidth, multiTcspc(i).PolarizationAngle] = deal(argCell);
+            end
+
+            for i = 1:ntrans
+                if(isData)
+                    multiTcspc(i).HiddenData = args.Data(:,i);
+                end
+                if(isBinwidth)
+                    multiTcspc(i).HiddenBinWidth = args.BinWidth(i);
+                end
+                if(isPol)
+                    multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(i);
+                end
             end            
         end
     end
