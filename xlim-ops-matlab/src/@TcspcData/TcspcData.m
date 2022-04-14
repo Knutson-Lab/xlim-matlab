@@ -79,17 +79,17 @@ classdef TcspcData
 
             isData = isfield(args,"Data");
             if(isData)
-                
+                assert(numel(args.Data(1,:)) == ntrans | numel(args.Data(1,:)) == 1, "No of curves and no of Tcspc objects do not match")
             end
 
             isBinwidth = isfield(args,"BinWidth");
             if(isBinwidth)
-                
+                assert(numel(args.BinWidth) == ntrans | numel(args.BinWidth) == 1, "No of bin widths provided and no of Tcspc objects do not match")
             end
 
             isPol = isfield(args,"PolarizationAngle");
             if(isPol)
-                
+                assert(numel(args.PolarizationAngle) == ntrans | numel(args.PolarizationAngle) == 1, "No of pol angles provided and no of Tcspc objects do not match")
             end
 
             for i = 1:ntrans
