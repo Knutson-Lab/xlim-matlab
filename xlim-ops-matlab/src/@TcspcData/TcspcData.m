@@ -66,7 +66,6 @@ classdef TcspcData
     end
 
     methods
-
         function multiTcspc = multiSet(multiTcspc, args)
             % Multiple curve constructor
             arguments
@@ -80,7 +79,7 @@ classdef TcspcData
 
             isData = isfield(args,"Data");
             if(isData)
-                assert(numel(args.Data) > 0);
+                
             end
 
             isBinwidth = isfield(args,"BinWidth");
@@ -90,7 +89,7 @@ classdef TcspcData
 
             isPol = isfield(args,"PolarizationAngle");
             if(isPol)
-
+                
             end
 
             for i = 1:ntrans
@@ -105,5 +104,33 @@ classdef TcspcData
                 end
             end            
         end
+
+        function [varargout] = multiGet(multiTcspc, prop)
+            arguments
+                multiTcspc (:,1) TcspcData
+            end
+
+            arguments (Repeating)
+                prop (1,1) {mustBeMember(prop,["Data","BinWidth","Polarization","NumberOfBins"])}
+            end
+
+            assert(numel(prop) <= 4, "Maximum number of properties accepted is 4")
+
+            for i=1:numel(prop)
+                switch prop{i}
+                    case "Data"  
+                        varargout{i} = horzcat(multiTcspc.Data);
+                    case "BinWidth"
+                        varargout{i} = vertcat(multiTcspc.BinWidth);
+                    case "PolarizationAngle"
+                        varargout{i} = vertcat(multiTcspc.PolarizationAngle);
+                    case "NumberOfBins"
+                        varargout{i} = vertcat(multiTcspc.NumberOfBins);
+                    otherwise
+                        break; %prop validation done in argument block
+                end
+            end
+
+        end    
     end
 end
