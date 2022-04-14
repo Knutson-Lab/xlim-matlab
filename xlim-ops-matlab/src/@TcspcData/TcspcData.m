@@ -79,28 +79,43 @@ classdef TcspcData
 
             isData = isfield(args,"Data");
             if(isData)
-                assert(numel(args.Data(1,:)) == ntrans | numel(args.Data(1,:)) == 1, "No of curves and no of Tcspc objects do not match")
+                isData1 = numel(args.Data(1,:)) == 1;
+                assert(numel(args.Data(1,:)) == ntrans | isData1, "No of curves and no of Tcspc objects do not match")
             end
 
             isBinwidth = isfield(args,"BinWidth");
             if(isBinwidth)
-                assert(numel(args.BinWidth) == ntrans | numel(args.BinWidth) == 1, "No of bin widths provided and no of Tcspc objects do not match")
+                isBinwidth1 = numel(args.BinWidth) == 1;
+                assert(numel(args.BinWidth) == ntrans | isBinwidth1, "No of bin widths provided and no of Tcspc objects do not match")
             end
 
             isPol = isfield(args,"PolarizationAngle");
             if(isPol)
-                assert(numel(args.PolarizationAngle) == ntrans | numel(args.PolarizationAngle) == 1, "No of pol angles provided and no of Tcspc objects do not match")
+                isPol1 = numel(args.PolarizationAngle) == 1;
+                assert(numel(args.PolarizationAngle) == ntrans | isPol1, "No of pol angles provided and no of Tcspc objects do not match")
             end
 
             for i = 1:ntrans
                 if(isData)
-                    multiTcspc(i).HiddenData = args.Data(:,i);
+                    if (~isData1)
+                        multiTcspc(i).HiddenData = args.Data(:,i);
+                    else
+                        multiTcspc(i).HiddenData = args.Data(:,1);
+                    end
                 end
                 if(isBinwidth)
-                    multiTcspc(i).HiddenBinWidth = args.BinWidth(i);
+                    if (~isBinwidth1)
+                        multiTcspc(i).HiddenBinWidth = args.BinWidth(i);
+                    else
+                        multiTcspc(i).HiddenBinWidth = args.BinWidth(1);
+                    end
                 end
                 if(isPol)
-                    multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(i);
+                    if (~isPol1)
+                         multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(i);
+                    else
+                         multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(1);
+                    end
                 end
             end            
         end
@@ -111,7 +126,7 @@ classdef TcspcData
             end
 
             arguments (Repeating)
-                prop (1,1) {mustBeMember(prop,["Data","BinWidth","Polarization","NumberOfBins"])}
+                prop (1,1) {mustBeMember(prop,["Data","BinWidth","PolarizationAngle","NumberOfBins"])}
             end
 
             assert(numel(prop) <= 4, "Maximum number of properties accepted is 4")
@@ -130,7 +145,6 @@ classdef TcspcData
                         break; %prop validation done in argument block
                 end
             end
-
         end    
     end
 end
