@@ -1,17 +1,20 @@
 classdef TcspcData
-    %TCSPCDATA 
+    % TcspcData - Data container for transient curves collected using time
+    % correlated single photon counting. Constructor receives name-value
+    % pair arguments for Data, BinWidth, and PolarizationAngle and returns
+    % a TcspcData object with those property values
 
     properties (Dependent)
-        % DATA - Vector of data
+        % DATA - Holds column vector of photon counts per time channel
         Data (:,1) {mustBeNonnegative,mustBeInteger}
-        % BINWIDTH
+        % BINWIDTH - Time resolution of photon collection bins in nanoseconds
         BinWidth (1,1) {mustBePositive,mustBeFinite}
-        % POLARIZATIONANGLE
+        % POLARIZATIONANGLE - Angle at which emitted photons from sample were collected
         PolarizationAngle (1,1) {mustBeInRange(PolarizationAngle,0,90)}
     end
 
     properties (Dependent, SetAccess = protected)
-        % NUMBER OF BINS - Storage for BinWidth
+        % NUMBEROFBINS - Number of time bins in the acquired data
         NumberOfBins (1,1) {mustBePositive,mustBeFinite}
     end
 
@@ -25,7 +28,6 @@ classdef TcspcData
     end
 
     methods
-
         function data = TcspcData(args)
             arguments
                 args.?TcspcData
@@ -67,7 +69,10 @@ classdef TcspcData
 
     methods
         function multiTcspc = multiSet(multiTcspc, args)
-            % Multiple curve constructor
+            % Multiple curve constructor. Receives arguments of a TcspcData
+            % array and name-value pairs for sets of Data, BinWidth,
+            % Polarizations to return an array of TcspcData objects with
+            % those properties
             arguments
                 multiTcspc (:,1) TcspcData
                 args.Data (:,:) {mustBeNonnegative,mustBeInteger}
@@ -79,8 +84,9 @@ classdef TcspcData
 
             isData = isfield(args,"Data");
             if(isData)
-                isData1 = numel(args.Data(1,:)) == 1;
-                assert(numel(args.Data(1,:)) == ntrans | isData1, "No of curves and no of Tcspc objects do not match")
+                ndatacurves = size(args.Data,2);
+                isData1 = ndatacurves == 1;
+                assert(numel(args.Data(1,:)) == ntrans || isData1, "No of curves and no of Tcspc objects do not match")
             end
 
             isBinwidth = isfield(args,"BinWidth");
@@ -100,27 +106,31 @@ classdef TcspcData
                     if (~isData1)
                         multiTcspc(i).HiddenData = args.Data(:,i);
                     else
-                        multiTcspc(i).HiddenData = args.Data(:,1);
+                        multiTcspc(i).HiddenData = args.Data;
                     end
                 end
                 if(isBinwidth)
                     if (~isBinwidth1)
                         multiTcspc(i).HiddenBinWidth = args.BinWidth(i);
                     else
-                        multiTcspc(i).HiddenBinWidth = args.BinWidth(1);
+                        multiTcspc(i).HiddenBinWidth = args.BinWidth;
                     end
                 end
                 if(isPol)
                     if (~isPol1)
                          multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(i);
                     else
-                         multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle(1);
+                         multiTcspc(i).HiddenPolarizationAngle = args.PolarizationAngle;
                     end
                 end
             end            
         end
 
-        function [varargout] = multiGet(multiTcspc, prop)
+        function varargout = multiGet(multiTcspc, prop)
+            %Property parser for single or array of TcspcData objects.
+            %Receives array of TcspcData and named list of properties to
+            %return. Property values are parsed and returned as sets of
+            %[Data, BinWidth, PolarizationAngle, NumberOfBins] in varargout
             arguments
                 multiTcspc (:,1) TcspcData
             end
@@ -130,7 +140,7 @@ classdef TcspcData
             end
 
             varargout = cell(size(prop));
-            
+
             for i=1:numel(prop)
                 switch prop{i}
                     case "Data" 
