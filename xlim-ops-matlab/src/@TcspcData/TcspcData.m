@@ -11,7 +11,7 @@ classdef TcspcData
     end
 
     properties (Dependent, SetAccess = protected)
-        % Storage for BinWidth
+        % NUMBER OF BINS - Storage for BinWidth
         NumberOfBins (1,1) {mustBePositive,mustBeFinite}
     end
 
@@ -20,7 +20,7 @@ classdef TcspcData
         HiddenData
         % HIDDENBINWIDTH
         HiddenBinWidth
-        %HIDDENPOLARIZATIONANGLE
+        % HIDDENPOLARIZATIONANGLE
         HiddenPolarizationAngle = 44.7
     end
 
@@ -129,20 +129,16 @@ classdef TcspcData
                 prop (1,1) {mustBeMember(prop,["Data","BinWidth","PolarizationAngle","NumberOfBins"])}
             end
 
-            assert(numel(prop) <= 4, "Maximum number of properties accepted is 4")
+            varargout = cell(size(prop));
 
             for i=1:numel(prop)
                 switch prop{i}
-                    case "Data"  
+                    case "Data" 
+                        uniquebins = unique(vertcat(multiTcspc.NumberOfBins));
+                        assert(isscalar(uniquebins),"Number of bins not the same in all curves");
                         varargout{i} = horzcat(multiTcspc.Data);
-                    case "BinWidth"
-                        varargout{i} = vertcat(multiTcspc.BinWidth);
-                    case "PolarizationAngle"
-                        varargout{i} = vertcat(multiTcspc.PolarizationAngle);
-                    case "NumberOfBins"
-                        varargout{i} = vertcat(multiTcspc.NumberOfBins);
                     otherwise
-                        break; %prop validation done in argument block
+                        varargout{i} = vertcat(multiTcspc.(prop{i}));
                 end
             end
         end    
