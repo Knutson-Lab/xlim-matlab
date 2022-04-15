@@ -130,7 +130,6 @@ classdef TcspcData
             end
 
             varargout = cell(size(prop));
-            
             for i=1:numel(prop)
                 switch prop{i}
                     case "Data" 
