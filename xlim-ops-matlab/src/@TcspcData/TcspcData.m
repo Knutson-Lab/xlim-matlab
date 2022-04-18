@@ -15,7 +15,7 @@ classdef TcspcData
 
     properties (Dependent, SetAccess = protected)
         % NUMBEROFBINS - Number of time bins in the acquired data
-        NumberOfBins (1,1) {mustBePositive,mustBeFinite}
+        NumberOfBins (1,1) {mustBeNonnegative, mustBeInteger, mustBeFinite}
     end
 
     properties (Access = protected,Hidden)
@@ -86,19 +86,21 @@ classdef TcspcData
             if(isData)
                 ndatacurves = size(args.Data,2);
                 isData1 = ndatacurves == 1;
-                assert(numel(args.Data(1,:)) == ntrans || isData1, "No of curves and no of Tcspc objects do not match")
+                assert(ndatacurves == ntrans || isData1, "No of curves and no of Tcspc objects do not match")
             end
 
             isBinwidth = isfield(args,"BinWidth");
             if(isBinwidth)
-                isBinwidth1 = numel(args.BinWidth) == 1;
-                assert(numel(args.BinWidth) == ntrans | isBinwidth1, "No of bin widths provided and no of Tcspc objects do not match")
+                nbinwidth = numel(args.BinWidth);
+                isBinwidth1 = nbinwidth == 1;
+                assert(nbinwidth == ntrans | isBinwidth1, "No of bin widths provided and no of Tcspc objects do not match")
             end
 
             isPol = isfield(args,"PolarizationAngle");
             if(isPol)
-                isPol1 = numel(args.PolarizationAngle) == 1;
-                assert(numel(args.PolarizationAngle) == ntrans | isPol1, "No of pol angles provided and no of Tcspc objects do not match")
+                npolang = numel(args.PolarizationAngle);
+                isPol1 = npolang == 1;
+                assert(npolang == ntrans | isPol1, "No of pol angles provided and no of Tcspc objects do not match")
             end
 
             for i = 1:ntrans
