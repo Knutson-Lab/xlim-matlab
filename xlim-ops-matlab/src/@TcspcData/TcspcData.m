@@ -15,7 +15,7 @@ classdef TcspcData
 
     properties (Dependent, SetAccess = protected)
         % NUMBEROFBINS - Number of time bins in the acquired data
-        NumberOfBins (1,1) {mustBeNonnegative, mustBeInteger, mustBeFinite}
+        NumberOfBins (1,1) {mustBeNonnegative, mustBeInteger}
     end
 
     properties (Access = protected,Hidden)
