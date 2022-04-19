@@ -47,7 +47,7 @@ classdef TcspcInstrument
             % arguments of a TcspcInstrument array and name-value pairs for
             % sets of Data (irf data) and ReferenceLifetime to return an
             % array of Tcspc Instrument objects with those properties
-            
+
             arguments
                 multiInst (:,1) TcspcInstrument
                 args.Data (:,1) TcspcData
@@ -78,6 +78,7 @@ classdef TcspcInstrument
                         multiInst(i).HiddenData = args.Data;
                     end
                 end
+                
                 if(isRefLife)
                     if (~isRefLife1)
                         multiInst(i).HiddenReferenceLifetime = args.ReferenceLifetime(i);
