@@ -42,15 +42,52 @@ classdef TcspcInstrument
             life = irf.HiddenReferenceLifetime;
         end    
 
-%         function multiInst = multiSet(multiInst, args)
-% 
-%             arguments
-%                 multiInst (:,1) TcspcInstrument
-%                 args.Data (:,:) {mustBeNonnegative,mustBeInteger}
-%                 args.ReferenceLifetime
-%             end
-% 
-%         end    
+        function multiInst = multiSet(multiInst, args)
+            % Multiple intrsument response function constructor. Receives
+            % arguments of a TcspcInstrument array and name-value pairs for
+            % sets of Data (irf data) and ReferenceLifetime to return an
+            % array of Tcspc Instrument objects with those properties
+
+            arguments
+                multiInst (:,1) TcspcInstrument
+                args.Data (:,1) TcspcData
+                args.ReferenceLifetime (:,1) {mustBePositive,mustBeFinite}
+            end
+
+            nirf = numel(multiInst);
+
+            isData = isfield(args,"Data");
+            if(isData)
+                ndatacurves = numel(args.Data);
+                isData1 = ndatacurves == 1;
+                assert(ndatacurves == nirf || isData1, "No of irfs and no of TcspcInstrument objects do not match")
+            end
+
+            isRefLife = isfield(args,"ReferenceLifetime");
+            if(isRefLife)
+                nreflife = numel(args.ReferenceLifetime);
+                isRefLife1 = nreflife == 1;
+                assert(nreflife == nirf || isRefLife1, "No of reference lifetimes provided and no of TcspcInstrument objects do not match")
+            end
+
+            for i = 1:nirf
+                if(isData)
+                    if (~isData1)
+                        multiInst(i).HiddenData = args.Data(i);
+                    else
+                        multiInst(i).HiddenData = args.Data;
+                    end
+                end
+                
+                if(isRefLife)
+                    if (~isRefLife1)
+                        multiInst(i).HiddenReferenceLifetime = args.ReferenceLifetime(i);
+                    else
+                        multiInst(i).HiddenReferenceLifetime = args.ReferenceLifetime;
+                    end
+                end
+            end             
+        end    
     end 
 end
 
