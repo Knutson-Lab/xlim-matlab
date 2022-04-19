@@ -78,7 +78,7 @@ classdef TcspcInstrument
                         multiInst(i).HiddenData = args.Data;
                     end
                 end
-                
+
                 if(isRefLife)
                     if (~isRefLife1)
                         multiInst(i).HiddenReferenceLifetime = args.ReferenceLifetime(i);
@@ -87,7 +87,27 @@ classdef TcspcInstrument
                     end
                 end
             end             
-        end    
+        end 
+        function varargout = multiGet(multiInst, prop)
+            %Property parser for single array of TcspcInstrument objects.
+            %Receives array f TcspcInstrument and named list of properties
+            %to return. Property values parsed and returned as sets of
+            %[Data, ReferenceLifetime] in varargout
+
+            arguments
+                multiInst (:,1) TcspcInstrument
+            end
+
+            arguments (Repeating)
+                prop (1,1) {mustBeMember(prop,["Data","ReferenceLifetime"])}
+            end
+
+            varargout = cell(size(prop));
+
+            for i=1:numel(prop)
+                varargout{i} = vertcat(multiInst.(prop{i}));
+            end
+        end         
     end 
 end
 
