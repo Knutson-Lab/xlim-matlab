@@ -1,6 +1,5 @@
 classdef BoundaryConstraints
-    %BOUNDARYCONSTRAINTS Summary of this class goes here
-    %   Detailed explanation goes here
+    % BOUNDARYCONSTRAINTS Holds boundary constraints to be used with a particular parameter
     
     properties (Dependent)
         % SCALARBOUNDS - Lower/upper bounds around parameter
