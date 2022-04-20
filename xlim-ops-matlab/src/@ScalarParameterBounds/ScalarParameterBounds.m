@@ -16,14 +16,17 @@ classdef ScalarParameterBounds
                 ub (:,1) {mustBeNumeric} = Inf
             end
 
-            noofBounds = numel(lb);
-
-
-            
-            for i=1:noofBounds
-                assert(lb(i) <= ub(i), '%f must be less than or equal to %f',lb(i),ub(i))
-                bounds(i).LowerBound = lb(i);
-                bounds(i).UpperBound = ub(i);
+            if(nargin>1)
+                noofBounds = numel(lb);
+                assert(noofBounds == numel(ub),"No of lower bounds and uppder bounds provided not the same");
+    
+                bounds(1:noofBounds) = ScalarParameterBounds;
+                
+                for i=1:noofBounds
+                    assert(lb(i) <= ub(i), '%f must be less than or equal to %f',lb(i),ub(i))
+                    bounds(i).LowerBound = lb(i);
+                    bounds(i).UpperBound = ub(i);
+                end
             end
         end
     end
