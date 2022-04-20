@@ -19,11 +19,11 @@ classdef ScalarParameterBounds
             if(nargin>1)
                 noofBounds = numel(lb);
                 assert(noofBounds == numel(ub),"No of lower bounds and uppder bounds provided not the same");
+                assert(all(lb <= ub),"Lower bounds must be less than or equal to corresponding upper bounds")
     
                 bounds(1:noofBounds) = ScalarParameterBounds;
                 
                 for i=1:noofBounds
-                    assert(lb(i) <= ub(i), '%f must be less than or equal to %f',lb(i),ub(i))
                     bounds(i).LowerBound = lb(i);
                     bounds(i).UpperBound = ub(i);
                 end
