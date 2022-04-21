@@ -4,7 +4,7 @@ classdef WeightedLifetimeComponent < LifetimeComponent
     
     properties (Dependent)
         % Amplitude - Amplitude value by which to scale exponential term
-        Amplitude FitParameter
+        Amplitude (1,1) FitParameter
     end
 
     properties (Access = protected,Hidden)
