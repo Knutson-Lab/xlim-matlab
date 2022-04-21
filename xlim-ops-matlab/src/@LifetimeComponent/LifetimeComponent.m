@@ -13,7 +13,7 @@ classdef LifetimeComponent
     
     methods
         function param = LifetimeComponent(args)
-            % LIFETIMECOMPONENT Construct an instance of LifetimeCOmponent
+            % LIFETIMECOMPONENT Construct an instance of LifetimeComponent
             %with the property Lifetime which is a FitParameter
             arguments
                 args.?LifetimeComponent
