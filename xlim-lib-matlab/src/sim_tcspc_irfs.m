@@ -50,6 +50,8 @@ function irf = sim_tcspc_irfs_photons(tcal,bck,param,ncurves,iOpt)
     photmatrix = vertcat(normphots,bckphots,offsphots);
     %% Bin photons into curves
     irf = bin_photons(tcal,nbins,ncurves,photmatrix);
+    %% Apply Poisson weighting for photon counts
+    irf(:) = random("Poisson",irf);
 end
 
 function phot = sim_gaussian_photons(nphots,mu,fwhm,ncurves)

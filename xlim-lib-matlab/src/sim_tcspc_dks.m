@@ -14,12 +14,11 @@ function trans = sim_tcspc_dks(tcal,irf,bck,param,ntau,ncurves,args)
         args.InterpolationOption {mustBeMember(args.InterpolationOption,...
             ["smoothingspline","cubicinterp"])} = "smoothingspline"
     end
-    % Check that number of irf/background curves match
+    %% Check that number of irf/background curves match
     nirfbins = numel(irf);
     nbckbins = numel(bck);
     assert(nirfbins == nbckbins);
-    % Check that parameter inputs align with specified number of
-    % lifetimes/anisotropies
+    %% Check for parameter size agreement
     nparam = numel(param);
     ntaucomp = 2 * ntau;
     nexpparam = ntaucomp + 4;
@@ -35,75 +34,65 @@ end
 
 function trans = sim_tcspc_dks_photons(tcal,irf,bck,param,ntau,ncurves,cMethod,iOpt)
     % Subroutine for photon simulation workflow
-
-    % Check that all amplitude terms are in photon counts
+    %% Housekeeping
+    nbins = numel(irf);
+    T = tcal * nbins;
+    %% Check that all amplitude terms are in photon counts
     ntaucomp = 2 * ntau;
     ntaucounts = param(1:2:ntaucomp);
     nlincounts = vertcat(ntaucounts,param(end - 3:end));
     mustBeInteger(nlincounts);
     mustBeNonnegative(nlincounts);
-
-    % Initialize photon matrix
-    ntotalphots = sum(nlincounts);
-    ctype = class(param);
-    photonmatrix = zeros(ncurves,ntotalphots,ctype);
-    bounds = cumsum(nlincounts);
-    % Simulate photons from exponential distribution
+    %% Simulate exponential photons
+    expphots_cell = cell(ntau,1);
     taus = param(2:2:ntaucomp);
-    counter = 0;
-    for i = 1:ntau
-        localbound = bounds(i);
-        localtau = taus(i);
-        localtaucounts = ntaucounts(i);
-        photonmatrix(:,(counter + 1):localbound) = ...
-            random("Exponential",localtau,ncurves,localtaucounts);
-        counter = counter + localbound;
-    end
-    % Simulate photons from IRF distribution using UTS
-    halfchan = tcal / 2;
-    nbins = numel(irf);
-    T = tcal * nbins;
-    tax = halfchan:tcal:T;
-    itp = fit(tax,irf,iOpt);
-    pdfirfitp = fit(tax,irf / integrate(itp,T,0),iOpt);
-    % Shift IRF
-    q = param(end - 3);
-    pdfirfitp = fit(tax,pdfirfitp(tax + (tcal * q)));
-    cdfitp = fit(tax,integrate(pdfirfitp,tax,0),iOpt);
-    nscattercounts = param(end - 2);
-    invcdfitp = fit(cdfitp(tax),tax,iOpt);
-    localbound = bounds(end - 2);
-    photonmatrix(:,(counter + 1):localbound) = ...
-        invcdfitp(random("Uniform",0,1,ncurves,nscattercounts));
-    counter = counter + localbound;
-    % Repeat for background distribution using UTS
-    itp = fit(tax,bck,iOpt);
-    pdfitp = fit(tax,bck / integrate(itp,T,0),iOpt);
-    cdfitp = fit(tax,integrate(pdfitp,tax,0),iOpt);
-    nbackgroundcounts = param(end - 1);
-    invcdfitp = fit(cdfitp(tax),tax,iOpt);
-    localbound = bounds(end - 1);
-    photonmatrix(:,(counter + 1):localbound) = ...
-        invcdfitp(random("Uniform",0,1,ncurves,nbackgroundcounts));
-    counter = counter + localbound;
-    % Do for uniform distribution
-    noffsetcounts = param(end);
-    localbound = bounds(end);
-    photonmatrix(:,(counter + 1):localbound) = ...
-        invcdfitp(random("Uniform",0,T,ncurves,noffsetcounts));
-    % Now package photons into bins
-    tbins = 0:tcal:T;
-    binnedPhots = zeros(nbins,ncurves,ctype);
-    photonMatrixT = photonmatrix';
-    for i = 1:ncurves
-        binnedPhots(:,i) = histcounts(photonMatrixT(:,i),tbins);
-    end
-    % Convolve photons with PDF of IRF
+    expphots_cell = fill_expphots_cell(expphots_cell,taus,ntau,ntaucounts,ncurves);
+    ntotaltaucounts = sum(ntaucounts);
+    expphots = zeros(ntotaltaucounts,ncurves,class(expphots_cell{1}));
+    expphots = fill_expphots(expphots,expphots_cell,ntaucounts,ntau);
+    %expcounts = cell2mat(expphots_cell);
+    %% Shift IRF
+    Q = param(end - 3);
+    irf = shift_irf(irf,tcal,Q,iOpt);
+    %% Normalize IRF
+    irf = irf / sum(irf);
+    %% Sample from shifted IRF using ITS
+    nscphots = param(end - 2);
+    scphots = inverse_transform_sampling(tcal,irf,iOpt,nscphots,ncurves);
+    %% Sample from background using ITS
+    nbckphots = param(end - 1);
+    bckphots = inverse_transform_sampling(tcal,bck,iOpt,nbckphots,ncurves);
+    %% Sample from uniform background
+    noffsphots = param(end);
+    offsphots = random("Uniform",0,T,noffsphots,ncurves);
+    %% Put photons into big matrix
+    photmatrix = vertcat(expphots,scphots,bckphots,offsphots);
+    %% Bin photons into curves
+    trans = bin_photons(tcal,nbins,ncurves,photmatrix);
+    %% Convolve photons with PDF of IRF
     switch cMethod
         case "FFT"
-            trans = round(abs(ifft(fftshift(fft(binnedPhots,[],1) .* fft(pdfirfitp(tax),[],1)),[],1)));
+            trans = round(abs(ifft(fftshift(fft(trans,[],1) .* fft(irf,[],1)),[],1)));
         otherwise
             error("Unsupported convolution!")
+    end
+    %% Apply Poisson weighting
+    trans = random("Poisson",trans);
+end
+
+function expphots_cell = fill_expphots_cell(expphots_cell,taus,ntau,ntaucounts,ncurves)
+    % Fills cell array with exponential counts
+    for i = 1:ntau
+        expphots_cell{i} = random("Exponential",taus(i),ntaucounts(i),ncurves);
+    end
+end
+
+function expphots = fill_expphots(expphots,expphots_cell,ntaucounts,ntau)
+    offs = 0;
+    for i = 1:ntau
+        localcounts = ntaucounts(i);
+        expphots((offs + 1):(offs + localcounts),:) = expphots_cell{i};
+        offs = offs + localcounts;
     end
 end
 

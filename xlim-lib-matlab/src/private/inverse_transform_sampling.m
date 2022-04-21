@@ -2,7 +2,7 @@ function phots = inverse_transform_sampling(tcal,curve,iOpt,nphot,ncurves)
     %INVERSE_TRANSFORM_SAMPLING Subroutine that performs inverse transform
     %sampling from custom distribution
     ncounts = sum(curve);
-    if ncounts > 0
+    if ncounts > 0 && nphot > 0
         % Prepare time axis to plot with curve
         tcal2 = tcal / 2;
         nbins = numel(curve);
