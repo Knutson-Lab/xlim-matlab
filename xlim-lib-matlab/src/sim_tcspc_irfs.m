@@ -6,7 +6,7 @@ function irfs = sim_tcspc_irfs(tcal,bck,param,ncurves,args)
         tcal (1,1) {mustBePositive,mustBeFinite}
         bck (:,1) {mustBeNonnegative,mustBeInteger}
         param (:,1) {mustBeNumeric}
-        ncurves (1,1) {mustBeNonnegative,mustBeInteger} = 10000
+        ncurves (1,1) {mustBeNonnegative,mustBeInteger} = 1
         args.SimulationMethod {mustBeMember(args.SimulationMethod,...
             "Photons")} = "Photons"
         args.InterpolationOption {mustBeMember(args.InterpolationOption,...
