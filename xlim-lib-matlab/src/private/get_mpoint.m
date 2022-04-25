@@ -1,7 +1,7 @@
-function mpoint = get_mpoint(fxparam,gparam,ncurves)
+function mpoint = get_mpoint(nparam,fxparam,gparam,ncurves)
     %GET_MPOINT Returns pointer matrix for curve fitting
-
-    nparam = numel(fxparam);
+    % Here, gparam needs to intersect with fxparam
+    gparam = gparam | fxparam;
     Ml = false(nparam,ncurves); 
     goffs = ncurves - 1;
     if ncurves > 1
