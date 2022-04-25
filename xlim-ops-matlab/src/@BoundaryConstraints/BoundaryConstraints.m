@@ -92,6 +92,30 @@ classdef BoundaryConstraints
         function nonlinconst = get.NonLinearConstraints(const)
             nonlinconst = const.HiddenNonLinearCOnstraints;
         end
+
+        function varargout = multiGet(multibound, prop)
+            %Property parser for single or array of BoundaryConstraints objects
+            arguments
+                multibound (:,1) BoundaryConstraints
+            end
+
+            arguments (Repeating)
+                prop (1,1) {mustBeMember(prop,["ScalarBounds","LinearInequalityVector","LinearInequalityScalar","LinearEqualityVector","LinearEqualityScalar","NonLinearConstraints"])}
+            end
+
+            varargout = cell(size(prop));
+
+            for i=1:numel(prop)
+                switch prop{i}
+                    case "LinearInequalityVector" 
+                        varargout{i} = horzcat(multibound.LinearInequalityVector);
+                    case "LinearEqualityVector" 
+                        varargout{i} = horzcat(multibound.LinearEqualityVector);   
+                    otherwise
+                        varargout{i} = vertcat(multibound.(prop{i}));
+                end
+            end
+        end         
     end
 end
 

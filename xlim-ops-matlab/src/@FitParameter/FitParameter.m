@@ -55,7 +55,35 @@ classdef FitParameter
 
         function link = get.Linked(param)
             link = param.HiddenLinked;
-        end      
+        end
+
+%         function multiparam = multiSet(multiparam, args)
+%             %multiple FitParameter constructor
+%             arguments
+%                 multiparam (:,1) FitParameter
+%                 args.Value (:,1) {mustBeNumeric}
+%                 args.Fixed (:,1) logical
+%                 args.Linked (:,1) logical
+%             end            
+% 
+%         end
+
+        function varargout = multiGet(multiparam, prop)
+            %Property parser for single or array of FitParameter objects
+            arguments
+                multiparam (:,1) FitParameter
+            end
+
+            arguments (Repeating)
+                prop (1,1) {mustBeMember(prop,["Value","Fixed","Linked"])}
+            end
+
+            varargout = cell(size(prop));
+
+            for i=1:numel(prop)
+                    varargout{i} = vertcat(multiparam.(prop{i}));
+            end
+        end 
     end
 end
 
