@@ -57,16 +57,62 @@ classdef FitParameter
             link = param.HiddenLinked;
         end
 
-%         function multiparam = multiSet(multiparam, args)
-%             %multiple FitParameter constructor
-%             arguments
-%                 multiparam (:,1) FitParameter
-%                 args.Value (:,1) {mustBeNumeric}
-%                 args.Fixed (:,1) logical
-%                 args.Linked (:,1) logical
-%             end            
-% 
-%         end
+        function multiparam = multiSet(multiparam, args)
+            %multiple FitParameter constructor
+            arguments
+                multiparam (:,1) FitParameter
+                args.Value (:,1) {mustBeNumeric}
+                args.Fixed (:,1) logical
+                args.Linked (:,1) logical
+            end            
+
+            nparam = numel(multiparam);
+
+            isValue = isfield(args,"Value");
+            if(isValue)
+                nvalue = numel(args.Value);
+                isValue1 = nvalue == 1;
+                assert(nvalue == nparam | isValue1, "No of values provided and no of FitParameter objects do not match")
+            end
+
+            isFixed = isfield(args,"Fixed");
+            if(isFixed)
+                nfixed = numel(args.Fixed);
+                isFixed1 = nfixed == 1;
+                assert(nfixed == nparam | isFixed1, "No of fixed booleans provided and no of FitParameter objects do not match")
+            end   
+
+            isLinked = isfield(args,"Linked");
+            if(isLinked)
+                nlinked = numel(args.Linked);
+                isLinked1 = nlinked == 1;
+                assert(nlinked == nparam | isLinked1, "No of linked booleans provided and no of FitParameter objects do not match")
+            end  
+
+            for i = 1:nparam
+                if(isValue)
+                    if (~isValue1)
+                        multiparam(i).HiddenValue = args.Value(i);
+                    else
+                        multiparam(i).HiddenValue = args.Value;
+                    end
+                end
+                if(isFixed)
+                    if (~isFixed1)
+                        multiparam(i).HiddenFixed = args.Fixed(i);
+                    else
+                        multiparam(i).HiddenFixed = args.Fixed;
+                    end
+                end
+                if(isLinked)
+                    if (~isLinked1)
+                        multiparam(i).HiddenLinked = args.Linked(i);
+                    else
+                        multiparam(i).HiddenLinked = args.Linked;
+                    end
+                end
+            end
+        end
 
         function varargout = multiGet(multiparam, prop)
             %Property parser for single or array of FitParameter objects
