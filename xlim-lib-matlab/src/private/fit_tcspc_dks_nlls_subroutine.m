@@ -88,20 +88,20 @@ function [results,spa_results] = fit_tcspc_dks_nlls_subroutine...
     if spaflag && nargout > 1
         %% Generate SPA grid
         spagrids = cellfun(@(x,y,z) linspace(x,y,z),spa_low,spa_high,...
-            spa_size,"UniformOutput",true);
+            spa_size,"UniformOutput",false);
         nspadims = numel(spa_low);
         [spa_coord{1:nspadims}] = ndgrid(spagrids{:});
         %% Initialize SPA results
-        sparesultsgrid = cellfun(@(x) 1:x,spa_size,"UniformOutput",true);
+        sparesultsgrid = cellfun(@(x) 1:x,spa_size,"UniformOutput",false);
         spa_results(sparesultsgrid{:}) = results;
         nevals = numel(spa_results);
         % Fix all parameter values in SPA range
-        fxparam(spa_indx{:}) = true;
+        fxparam([spa_indx{:}]) = true;
         for i = 1:nevals
             % Return parameters to fix
             spaparamvals = cellfun(@(x) x(i),spa_coord);
             % Assign to param & fix
-            param(spa_indx{:}) = spaparamvals;
+            param([spa_indx{:}]) = spaparamvals;
             % Recursively call this routine
             spa_results(i) = fit_tcspc_dks_nlls_subroutine...
                 (tcal,ntcal,trans,ndata,ntrans,...
