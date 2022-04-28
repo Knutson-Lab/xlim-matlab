@@ -20,7 +20,15 @@ classdef OptimizationParameter
                 noofconst = numel(const);
                 assert(noofval == noofconst, "Must be equal number of FitParameter objects and BoundaryConstraint objects");
 
-                
+                values = val.multiGet("Value");
+                bounds = const.multiGet("ScalarBounds");
+
+                lb = vertcat(bounds.LowerBound);
+                ub = vertcat(bounds.UpperBound);
+                checklower = all(lb<=values);
+                checkupper = all(values<=ub);
+
+                assert(checklower && checkupper,"Some Value is not between ScalarBounds");
 
                 param(1:noofval) = OptimizationParameter; 
                 for i=1:noofval
