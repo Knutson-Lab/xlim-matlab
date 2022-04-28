@@ -62,6 +62,8 @@ function [results,spa_results] = fit_tcspc_dks_nlls...
     % NTAU/NTHETA - (2 * ntau) + (2 * ntheta) + 4 == nparam
     nexpparam = (2 * ntau) + (2 * ntheta) + 4;
     assert(nexpparam == nparam);
+    % Q must be fixed
+    assert(fxparam(end - 3))
     %% Valdiate support plane block
     % SPA_INDX - Between 1 - nparam
     assert(all(cellfun(@(x) x <= nparam,spa_indx)));

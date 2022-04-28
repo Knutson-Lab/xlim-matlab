@@ -40,7 +40,7 @@ function trans = sim_tcspc_dks_photons(tcal,irf,bck,param,ntau,ncurves,cMethod,i
     %% Check that all amplitude terms are in photon counts
     ntaucomp = 2 * ntau;
     ntaucounts = param(1:2:ntaucomp);
-    nlincounts = vertcat(ntaucounts,param(end - 3:end));
+    nlincounts = vertcat(ntaucounts,param(end - 2:end));
     mustBeInteger(nlincounts);
     mustBeNonnegative(nlincounts);
     %% Simulate exponential photons
