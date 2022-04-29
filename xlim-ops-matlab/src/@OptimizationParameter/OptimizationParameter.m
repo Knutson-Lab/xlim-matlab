@@ -23,12 +23,18 @@ classdef OptimizationParameter
                 values = val.multiGet("Value");
                 bounds = const.multiGet("ScalarBounds");
 
-                lb = vertcat(bounds.LowerBound);
-                ub = vertcat(bounds.UpperBound);
-                checklower = all(lb<=values);
-                checkupper = all(values<=ub);
+                [lb,ub] = bounds.multiGet("LowerBound","UpperBound");
+                assert(numel(lb) == numel(ub),"Number of lower bounds and upper bounds must be equal");
+                noofbounds = numel(lb);
+                
+                if(noofbounds~=0)
+                    assert(noofbounds == values,"Each bound must correspond to a value")
 
-                assert(checklower && checkupper,"Some Value is not between ScalarBounds");
+                    checklower = all(lb<=values);
+                    checkupper = all(values<=ub);                
+
+                    assert(checklower && checkupper,"Some Value is not between ScalarBounds");
+                end
 
                 param(1:noofval) = OptimizationParameter; 
                 for i=1:noofval
