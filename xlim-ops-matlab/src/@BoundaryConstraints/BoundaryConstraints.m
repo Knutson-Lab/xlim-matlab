@@ -106,7 +106,22 @@ classdef BoundaryConstraints
             varargout = cell(size(prop));
 
             for i=1:numel(prop)
-                    varargout{i} = vertcat(multibound.(prop{i}));
+                switch prop{i}
+                    case "LinearInequalityVector" 
+                        try 
+                            varargout{i} = vertcat(multibound.LinearInequalityVector);
+                        catch 
+                            error("LinearInequalityVectors are not of the same length")
+                        end
+                    case "LinearEqualityVector" 
+                        try 
+                            varargout{i} = vertcat(multibound.LinearEqualityVector);
+                        catch 
+                            error("LinearEqualityVectors are not of the same length")
+                        end  
+                    otherwise
+                        varargout{i} = vertcat(multibound.(prop{i}));
+                end
             end
         end         
     end
