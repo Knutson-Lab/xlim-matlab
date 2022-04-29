@@ -123,7 +123,108 @@ classdef BoundaryConstraints
                         varargout{i} = vertcat(multibound.(prop{i}));
                 end
             end
-        end         
+        end 
+
+        function multiconst = multiSet(multiconst,args)
+            arguments
+                multiconst (:,1) BoundaryConstraints
+                args.ScalarBounds (:,1) ScalarParameterBounds
+                args.LinearInequalityVector (:,:) {mustBeNumeric}
+                args.LinearInequalityScalar (:,1) {mustBeNumeric}
+                args.LinearEqualityVector (:,:) {mustBeNumeric}
+                args.LinearEqualityScalar (:,1) {mustBeNumeric}
+                args.NonLinearConstraints (:,1) function_handle
+            end
+            
+            nbounds = numel(multiconst);
+
+            isscalarb = isfield(args,"ScalarBounds");
+            if(isscalarb)
+                nscalarb = size(args.ScalarBounds);
+                isscalarb1 = nscalarb == 1;
+                assert(nscalarb == nbounds || isscalarb1, "No of ScalarBounds and no of BoundaryConstraint objects do not match")
+            end
+
+            isLinInVec = isfield(args,"LinearInequalityVector");
+            if(isLinInVec)
+                nlininvec = size(args.LinearInequalityVector,1);
+                islininvec1 = nlininvec == 1;
+                assert(nlininvec == nbounds || islininvec1, "No of LinearInequalityVectors and no of BoundaryConstraint objects do not match")
+            end
+
+            isLinEqVec = isfield(args,"LinearEqualityVector");
+            if(isLinEqVec)
+                nlineqvec = size(args.LinearEqualityVector,1);
+                islineqvec1 = nlineqvec == 1;
+                assert(nlineqvec == nbounds || islineqvec1, "No of LinearEqualityVectors and no of BoundaryConstraint objects do not match")
+            end
+
+            isLinInScal = isfield(args,"LinearInequalityScalar");
+            if(isLinInScal)
+                nlininscal = size(args.LinearInequalityScalar);
+                islininscal1 = nlininscal == 1;
+                assert(nlininscal == nbounds || islininscal1, "No of LinearInequalityScalars and no of BoundaryConstraint objects do not match")
+            end
+
+            isLinEqScal = isfield(args,"LinearEqualityScalar");
+            if(isLinEqScal)
+                nlineqscal = size(args.LinearEqualityScalar);
+                islineqscal1 = nlineqscal == 1;
+                assert(nlineqscal == nbounds || islineqscal1, "No of LinearEqualityScalars and no of BoundaryConstraint objects do not match")
+            end
+
+            isnonlin = isfield(args,"NonLinearConstraints");
+            if(isnonlin)
+                nnonlin = size(args.NonLinearConstraints);
+                isnonlin1 = nnonlin == 1;
+                assert(nnonlin == nbounds || isnonlin1, "No of NonLinearConstraints provided and no of BoundaryConstraint objects do not match")
+            end
+
+            for i = 1:nbounds
+                if(isscalarb)
+                    if (~isscalarb1)
+                        multiconst(i).HiddenScalarBounds = args.ScalarBounds(i);
+                    else
+                        multiconst(i).HiddenScalarBounds = args.ScalarBounds;
+                    end
+                end
+                if(isLinInVec)
+                    if (~islininvec1)
+                        multiconst(i).HiddenLinearInequalityVector = args.LinearInequalityVector(i,:);
+                    else
+                        multiconst(i).HiddenLinearInequalityVector = args.LinearInequalityVector;
+                    end
+                end
+                if(isLinEqVec)
+                    if (~islineqvec1)
+                        multiconst(i).HiddenLinearEqualityVector = args.LinearEqualityVector(i,:);
+                    else
+                        multiconst(i).HiddenLinearEqualityVector = args.LinearEqualityVector;
+                    end
+                end
+                if(isLinInScal)
+                    if (~islininscal1)
+                        multiconst(i).HiddenLinearInequalityScalar = args.LinearInequalityScalar(i);
+                    else
+                        multiconst(i).HiddenLinearInequalityScalar = args.LinearInequalityScalar;
+                    end
+                end
+                if(isLinEqScal)
+                    if (~islineqscal1)
+                        multiconst(i).HiddenLinearEqualityScalar = args.LinearEqualityScalar(i);
+                    else
+                        multiconst(i).HiddenLinearEqualityScalar = args.LinearEqualityScalar;
+                    end
+                end
+                if(isnonlin)
+                    if (~isnonlin1)
+                        multiconst(i).HiddenNonLinearConstraints = args.NonLinearConstraints(i);
+                    else
+                        multiconst(i).HiddenNonLinearConstraints = args.NonLinearConstraints;
+                    end
+                end
+            end 
+        end
     end
 end
 
