@@ -106,14 +106,7 @@ classdef BoundaryConstraints
             varargout = cell(size(prop));
 
             for i=1:numel(prop)
-                switch prop{i}
-                    case "LinearInequalityVector" 
-                        varargout{i} = horzcat(multibound.LinearInequalityVector);
-                    case "LinearEqualityVector" 
-                        varargout{i} = horzcat(multibound.LinearEqualityVector);   
-                    otherwise
-                        varargout{i} = vertcat(multibound.(prop{i}));
-                end
+                    varargout{i} = vertcat(multibound.(prop{i}));
             end
         end         
     end
