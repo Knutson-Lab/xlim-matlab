@@ -13,7 +13,7 @@ classdef OptimizationParameter
             % OPTIMIZATIONPARAMETER
             arguments
                 val (:,1) FitParameter
-                const (:,1) BoundaryConstraints
+                const (:,1) BoundaryConstraints = BoundaryConstraints()
             end
             if(nargin>1)
                 noofval = numel(val);
@@ -24,28 +24,47 @@ classdef OptimizationParameter
                 bounds = const.multiGet("ScalarBounds");
 
                 [lb,ub] = bounds.multiGet("LowerBound","UpperBound");
-                noofbounds = numel(lb);
-                
-                if(~isempty(lb) && ~isempty(ub))
-                    assert(noofbounds == values || noofbounds == 1,"Each bound must correspond to a value")
+                noofub = numel(ub);
+                nooflb = numel(lb);
 
-                    checklower = all(lb<=values);
+                if(noofub > 0 && nooflb > 0)
+                    if(noofub > 1 && nooflb > 1)
+                        % array of lower bounds and upper bounds
+                        assert(noofub == nooflb,"Must have same number of lower and upper bounds")
+                        assert(noofub == noofval,"Each bound must correspond to a value")
+
+                        checklower = all(lb<=values);
+                        checkupper = all(values<=ub);                
+    
+                        assert(checklower && checkupper,"Some Value is not between ScalarBounds")
+                    elseif(noofub > 1)
+                        % 1 lower bound, array of upper bounds
+                        assert(noofub == noofval,"Each bound must correspond to a value")
+
+                        checklower = all(lb<=values);
+                        checkupper = all(values<=ub);                
+    
+                        assert(checklower && checkupper,"Some Value is not between ScalarBounds")
+                    elseif(nooflb > 1)
+                        % 1 upper bound, array of lower bounds
+                        assert(nooflb == noofval,"Each bound must correspond to a value")
+
+                        checklower = all(lb<=values);
+                        checkupper = all(values<=ub);                
+    
+                        assert(checklower && checkupper,"Some Value is not between ScalarBounds")
+                    end
+                elseif (noofub > 0)
+                    % 1 specified upper bound, no lower bound
                     checkupper = all(values<=ub);                
 
-                    assert(checklower && checkupper,"Some Value is not between ScalarBounds");
-                elseif(isempty(lb) && ~isempty(ub))
-                    assert(noofbounds == values || noofbounds == 1,"Each bound must correspond to a value")
-
-                    checkupper = all(values<=ub);                
-
-                    assert(checkupper,"Some Value is not between ScalarBounds");
-                elseif(~isempty(lb) && isempty(ub))
-                    assert(noofbounds == values || noofbounds == 1,"Each bound must correspond to a value")
-
+                    assert(checkupper,"Some Value is not between ScalarBounds")
+                elseif (nooflb > 0)
+                    % 1 specified lower bound, no upper bound
                     checklower = all(lb<=values);              
 
-                    assert(checklower,"Some Value is not between ScalarBounds");
-                end
+                    assert(checklower,"Some Value is not between ScalarBounds")
+                end    
 
                 param(1:noofval) = OptimizationParameter; 
                 for i=1:noofval
