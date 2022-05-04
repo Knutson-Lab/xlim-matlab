@@ -107,18 +107,12 @@ classdef BoundaryConstraints
 
             for i=1:numel(prop)
                 switch prop{i}
-                    case "LinearInequalityVector" 
+                    case {"LinearInequalityVector","LinearEqualityVector"} 
                         try 
-                            varargout{i} = vertcat(multibound.LinearInequalityVector);
+                            varargout{i} = vertcat(multibound.(prop{i}));
                         catch 
-                            error("LinearInequalityVectors are not of the same length")
-                        end
-                    case "LinearEqualityVector" 
-                        try 
-                            varargout{i} = vertcat(multibound.LinearEqualityVector);
-                        catch 
-                            error("LinearEqualityVectors are not of the same length")
-                        end  
+                            error("Some Linear Vectors are not of the same length")
+                        end 
                     otherwise
                         varargout{i} = vertcat(multibound.(prop{i}));
                 end
@@ -140,7 +134,7 @@ classdef BoundaryConstraints
 
             isscalarb = isfield(args,"ScalarBounds");
             if(isscalarb)
-                nscalarb = size(args.ScalarBounds);
+                nscalarb = numel(args.ScalarBounds);
                 isscalarb1 = nscalarb == 1;
                 assert(nscalarb == nbounds || isscalarb1, "No of ScalarBounds and no of BoundaryConstraint objects do not match")
             end
@@ -161,21 +155,21 @@ classdef BoundaryConstraints
 
             isLinInScal = isfield(args,"LinearInequalityScalar");
             if(isLinInScal)
-                nlininscal = size(args.LinearInequalityScalar);
+                nlininscal = numel(args.LinearInequalityScalar);
                 islininscal1 = nlininscal == 1;
                 assert(nlininscal == nbounds || islininscal1, "No of LinearInequalityScalars and no of BoundaryConstraint objects do not match")
             end
 
             isLinEqScal = isfield(args,"LinearEqualityScalar");
             if(isLinEqScal)
-                nlineqscal = size(args.LinearEqualityScalar);
+                nlineqscal = numel(args.LinearEqualityScalar);
                 islineqscal1 = nlineqscal == 1;
                 assert(nlineqscal == nbounds || islineqscal1, "No of LinearEqualityScalars and no of BoundaryConstraint objects do not match")
             end
 
             isnonlin = isfield(args,"NonLinearConstraints");
             if(isnonlin)
-                nnonlin = size(args.NonLinearConstraints);
+                nnonlin = numel(args.NonLinearConstraints);
                 isnonlin1 = nnonlin == 1;
                 assert(nnonlin == nbounds || isnonlin1, "No of NonLinearConstraints provided and no of BoundaryConstraint objects do not match")
             end
