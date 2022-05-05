@@ -3,7 +3,7 @@ classdef LifetimeComponent
     
     properties (Dependent)
         % LIFETIME - Parameter in the denominator of the lifetime term
-        Lifetime (1,1) FitParameter
+        Lifetime (1,1) OptimizationParameter
     end
 
     properties (Access = protected,Hidden)

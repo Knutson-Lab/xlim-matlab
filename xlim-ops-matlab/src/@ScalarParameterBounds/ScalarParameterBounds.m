@@ -29,6 +29,21 @@ classdef ScalarParameterBounds
                 end
             end
         end
+
+        function varargout = multiGet(multibound,prop)
+            arguments
+                multibound ScalarParameterBounds
+            end
+            arguments (Repeating)
+                prop (1,1) {mustBeMember(prop,["LowerBound","UpperBound"])}
+            end
+
+            varargout = cell(size(prop));
+
+            for i=1:numel(prop)
+                varargout{i} = vertcat(multibound.(prop{i}));
+            end    
+        end
     end
 end
 
