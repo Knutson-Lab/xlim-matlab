@@ -32,35 +32,27 @@ classdef OptimizationParameter
                         % array of lower bounds and upper bounds
                         assert(noofub == nooflb,"Must have same number of lower and upper bounds")
                         assert(noofub == noofval,"Each bound must correspond to a value")
-
-                        checklower = all(lb<=values);
-                        checkupper = all(values<=ub);                
-    
-                        assert(checklower && checkupper,"Some Value is not between ScalarBounds")
                     elseif(noofub > 1)
                         % 1 lower bound, array of upper bounds
                         assert(noofub == noofval,"Each bound must correspond to a value")
-
-                        checklower = all(lb<=values);
-                        checkupper = all(values<=ub);                
-    
-                        assert(checklower && checkupper,"Some Value is not between ScalarBounds")
-                    elseif(nooflb > 1)
+                    else
                         % 1 upper bound, array of lower bounds
                         assert(nooflb == noofval,"Each bound must correspond to a value")
-
-                        checklower = all(lb<=values);
-                        checkupper = all(values<=ub);                
-    
-                        assert(checklower && checkupper,"Some Value is not between ScalarBounds")
                     end
+
+                    checklower = all(lb<=values);
+                    checkupper = all(values<=ub);                
+
+                    assert(checklower && checkupper,"Some Value is not between ScalarBounds")
                 elseif (noofub > 0)
-                    % 1 specified upper bound, no lower bound
+                    % 1 or array of upper bounds, no lower bound
+                    assert(noofub == noofval || noofub == 1,"Each bound must correspond to a value")
                     checkupper = all(values<=ub);                
 
                     assert(checkupper,"Some Value is not between ScalarBounds")
                 elseif (nooflb > 0)
-                    % 1 specified lower bound, no upper bound
+                    % 1 or array of lower bounds, no upper bound
+                    assert(nooflb == noofval || nooflb == 1,"Each bound must correspond to a value")
                     checklower = all(lb<=values);              
 
                     assert(checklower,"Some Value is not between ScalarBounds")
