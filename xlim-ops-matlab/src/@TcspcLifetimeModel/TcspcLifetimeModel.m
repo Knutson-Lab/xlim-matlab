@@ -31,6 +31,7 @@ classdef TcspcLifetimeModel < TcspcModel
         % HIDDENOFFSET
         HiddenOffset
     end    
+    
     methods
         function model = TcspcModel(args)
             arguments
