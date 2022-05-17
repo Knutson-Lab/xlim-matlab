@@ -31,7 +31,7 @@ classdef TcspcLifetimeModel < TcspcModel
         % HIDDENOFFSET
         HiddenOffset
     end    
-    
+
     methods
         function model = TcspcModel(args)
             arguments
@@ -115,7 +115,8 @@ classdef TcspcLifetimeModel < TcspcModel
             assert(irf.Data == bck);
             values = model.ParameterVector.multiGet("Value");
             transdata = sim_tcspc_dks(irf.Data.BinWidth,irf.Data.Data,bck.Data,values,numel(model.Anisotropies),ncurves,"SimulationMethod",args.SimulationMethod,"ConvolutionMethod",args.ConvolutionMethod,"InterpolationOption",args.InterpolationMethod);
-            trans = TcspcData("Data",transdata,"BinWidth",irf.Data.BinWidth);
+            trans(ncurves) = TcspcData;
+            trans = trans.multiSet("Data",transdata,"BinWidth",irf.Data.BinWidth);
         end
     end
 end
