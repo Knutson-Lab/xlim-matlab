@@ -32,6 +32,10 @@ classdef TcspcLifetimeModel < TcspcModel
         HiddenOffset
     end    
 
+    properties (Dependent, SetAccess = protected)
+        ParameterVector (:,1) OptimizationParameter
+    end    
+
     methods
         function model = TcspcModel(args)
             arguments
@@ -90,6 +94,10 @@ classdef TcspcLifetimeModel < TcspcModel
         function off = get.Offset(model)
             off = model.HiddenOffset;
         end
+
+        function paramv = get.ParameterVector(model)
+            param = 
+        end    
         
         function trans = simulate(model, irf, bck, ncurves, args)
             %METHOD1 Summary of this method goes here
@@ -114,7 +122,8 @@ classdef TcspcLifetimeModel < TcspcModel
 
             assert(irf.Data == bck);
             values = model.ParameterVector.multiGet("Value");
-            transdata = sim_tcspc_dks(irf.Data.BinWidth,irf.Data.Data,bck.Data,values,numel(model.Anisotropies),ncurves,"SimulationMethod",args.SimulationMethod,"ConvolutionMethod",args.ConvolutionMethod,"InterpolationOption",args.InterpolationMethod);
+            c = namedargs2cell(args);
+            transdata = sim_tcspc_dks(irf.Data.BinWidth,irf.Data.Data,bck.Data,values,numel(model.Lifetimes),ncurves,c{:});
             trans(ncurves) = TcspcData;
             trans = trans.multiSet("Data",transdata,"BinWidth",irf.Data.BinWidth);
         end

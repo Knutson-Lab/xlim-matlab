@@ -1,7 +1,7 @@
-classdef (Abstract) TcspcModel
+classdef TcspcModel
     %TCSPCMODEL Abstract superclass for fitting models to TCSPC curves
     
-    properties (Abstract, SetAccess = protected)
+    properties (Abstract)
         ParameterVector (:,1) OptimizationParameter
         BackgroundFraction (1,1) OptimizationParameter
         Offset (1,1) OptimizationParameter
