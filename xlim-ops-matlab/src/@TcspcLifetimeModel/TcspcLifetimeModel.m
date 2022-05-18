@@ -96,7 +96,9 @@ classdef TcspcLifetimeModel < TcspcModel
         end
 
         function paramv = get.ParameterVector(model)
-            param = 
+            expcomps = model.Lifetimes.multiGet("AmpTauPair");
+            anicomps = model.Anisotropies.multiGet("AmpTauPair");
+            paramv = vertcat(expcomps,anicomps,model.ColorShift,model.Scatter,model.BackgroundFraction,model.Offset);
         end    
         
         function trans = simulate(model, irf, bck, ncurves, args)
