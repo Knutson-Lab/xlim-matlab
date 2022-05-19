@@ -44,9 +44,11 @@ classdef ScalarParameterBounds
                 elseif(~isempty(lb))
                     for i=1:noofBounds
                         bounds(i).LowerBound = lb(i);
+                        bounds(i).UpperBound = [];
                     end
                 else
                     for i=1:noofBounds
+                        bounds(i).LowerBound = [];
                         bounds(i).UpperBound = ub(i);
                     end
                 end
