@@ -25,32 +25,29 @@ classdef ScalarParameterBounds
                 if(~isempty(lb) && ~isempty(ub))
                     assert(all(lb <= ub),"Lower bounds must be less than or equal to corresponding upper bounds")
                     if(nooflb>1 && noofub>1)
-                        assert(nooflb==noofub,"No of lower bounds and upper bounds provided not equal")
-                        for i=1:noofBounds
+                        assert(nooflb==noofub,"No of lower bounds and upper bounds provided not equal")   
+                    end
+                end 
+
+                for i=1:noofBounds
+                    if(nooflb>0)
+                        if(nooflb>1)
                             bounds(i).LowerBound = lb(i);
-                            bounds(i).UpperBound = ub(i);
+                        else
+                            bounds(i).LowerBound = lb;
                         end
-                    elseif(nooflb>1)
-                        for i=1:noofBounds
-                            bounds(i).LowerBound = lb(i);
+                    else
+                        bounds(i).LowerBound = [];
+                    end
+                    if(noofub>0)
+                        if(noofub>1)
+                            bounds(i).UpperBound = ub(i);
+                        else
                             bounds(i).UpperBound = ub;
                         end
                     else
-                        for i=1:noofBounds
-                            bounds(i).LowerBound = lb;
-                            bounds(i).UpperBound = ub(i);
-                        end
-                    end
-                elseif(~isempty(lb))
-                    for i=1:noofBounds
-                        bounds(i).LowerBound = lb(i);
                         bounds(i).UpperBound = [];
-                    end
-                else
-                    for i=1:noofBounds
-                        bounds(i).LowerBound = [];
-                        bounds(i).UpperBound = ub(i);
-                    end
+                    end 
                 end
             end
         end
