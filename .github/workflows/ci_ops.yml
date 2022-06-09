@@ -33,10 +33,10 @@ jobs:
       - name: Run MATLAB tests
         uses: matlab-actions/run-tests@v1
         with:
-          source-folder: xlim-ops-matlab/src
+          source-folder: https://github.com/Knutson-Lab/xlim-matlab/tree/testing_01/xlim-ops-matlab/src
           test-results-junit: test-results/results.xml
           code-coverage-cobertura: coverage.xml     
-          select-by-folder: xlim-ops-matlab/tests
+          select-by-folder: https://github.com/Knutson-Lab/xlim-matlab/tree/testing_01/xlim-ops-matlab/tests
         
         # with:
           # test-results-junit: test-results/results.xml
