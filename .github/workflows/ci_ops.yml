@@ -36,7 +36,7 @@ jobs:
           source-folder: xlim-ops-matlab/src
           test-results-junit: test-results/results.xml
           code-coverage-cobertura: coverage.xml     
-          select-by-folder: xlim-ops-matlab
+          select-by-folder: xlim-ops-matlab/tests
         
         # with:
           # test-results-junit: test-results/results.xml
