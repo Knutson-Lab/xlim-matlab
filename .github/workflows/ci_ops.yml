@@ -33,7 +33,7 @@ jobs:
       - name: Run MATLAB tests
         uses: matlab-actions/run-tests@v1
         with:
-          source-folder: xlim-ops-matlab/src/@TcspcData
+          source-folder: xlim-ops-matlab
           test-results-junit: test-results/results.xml
           code-coverage-cobertura: coverage.xml     
           select-by-folder: test
