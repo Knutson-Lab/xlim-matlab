@@ -28,15 +28,21 @@ jobs:
       # Runs a single command using the runners shell
       - name: Setup MATLAB on Runner
         uses: matlab-actions/setup-matlab@v1
+        
+      - name: Run script
+        uses: matlab-actions/run-command@v1
+        with:
+          command: runscript.m       
+        
 
       # Runs a set of commands using the runners shell
-      - name: Run MATLAB tests
-        uses: matlab-actions/run-tests@v1
-        with:
-          source-folder: xlim-ops-matlab
-          test-results-junit: test-results/results.xml
-          code-coverage-cobertura: coverage.xml     
-          select-by-folder: test
+      #- name: Run MATLAB tests
+      #  uses: matlab-actions/run-tests@v1
+      #  with:
+      #    source-folder: xlim-ops-matlab
+      #   test-results-junit: test-results/results.xml
+      #    code-coverage-cobertura: coverage.xml     
+      #    select-by-folder: test
           
         # with:
           # test-results-junit: test-results/results.xml
