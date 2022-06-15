@@ -1,4 +1,5 @@
 suite = testsuite("test");
+addpath("xlim-ops-matlab\src\");
 
 import matlab.unittest.TestRunner
 runner = TestRunner.withTextOutput("OutputDetail",3);
