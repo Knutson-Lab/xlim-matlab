@@ -56,8 +56,13 @@ jobs:
         uses: actions/upload-artifact@v2
         if: always()
         with:
-          # name: test-restults
-          # path: test-results/results.xml
-
           name: code-coverage
           path: coverage.xml
+          
+      - name: Upload results artifact
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: test-results
+          path: junittestresults.xml
+          
