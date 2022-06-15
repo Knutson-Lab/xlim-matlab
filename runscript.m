@@ -1,5 +1,5 @@
 suite = testsuite("test");
-addpath("xlim-ops-matlab\src\@TcspcData\");
+addpath(genpath('xlim-ops-matlab'))
 
 import matlab.unittest.TestRunner
 runner = TestRunner.withTextOutput("OutputDetail",3);
