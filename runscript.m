@@ -1,4 +1,4 @@
-suite = testsuite("test/tcspcdata_test.m");
+suite = testsuite("xlim-ops-matlab/src/TcspcData_Test.m");
 
 import matlab.unittest.TestRunner
 runner = TestRunner.withTextOutput("OutputDetail",3);
