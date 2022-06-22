@@ -1,4 +1,4 @@
-suite = testsuite("test");
+suite = testsuite("xlim-ops-matlab/test");
 addpath(genpath('xlim-ops-matlab'))
 
 import matlab.unittest.TestRunner
