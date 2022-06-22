@@ -20,7 +20,7 @@ sourceCodeFile = "xlim-ops-matlab/src/@TcspcData/TcspcData.m";
 %sourceCodeFolder = "xlim-ops-matlab/src";
 reportFile = "cobertura.xml";
 reportFormat = CoberturaFormat(reportFile);
-p3 = CodeCoveragePlugin.forFolder(sourceCodeFile,"Producing",reportFormat);
+p3 = CodeCoveragePlugin.forFile(sourceCodeFile,"Producing",reportFormat);
 runner.addPlugin(p3)
 
 results = runner.run(suite);
