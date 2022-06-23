@@ -26,10 +26,10 @@ runner.addPlugin(p3)
 
 runner.run(suite1);
 
-%     sourceCodeFolder = "xlim-ops-matlab/src";
-%     reportFile = "cobertura.xml";
-%     reportFormat = CoberturaFormat(reportFile);
-%     p3 = CodeCoveragePlugin.forFolder(sourceCodeFolder,"Producing",reportFormat,"IncludingSubfolders",true);
-%     runner.addPlugin(p3)
-%     
-%     runner.run(suite2);
+sourceCodeFolder = "xlim-ops-matlab/src";
+reportFile = "cobertura.xml";
+reportFormat = CoberturaFormat(reportFile);
+p3 = CodeCoveragePlugin.forFolder(sourceCodeFolder,"Producing",reportFormat,"IncludingSubfolders",true);
+runner.addPlugin(p3)
+
+runner.run(suite2);
