@@ -86,21 +86,21 @@ classdef TcspcData
             if(isData)
                 ndatacurves = size(args.Data,2);
                 isData1 = ndatacurves == 1;
-                assert(ndatacurves == ntrans || isData1, "No of curves and no of Tcspc objects do not match")
+                assert(ndatacurves == ntrans || isData1,'MATLAB:assertion:failed', "No of curves and no of Tcspc objects do not match")
             end
 
             isBinwidth = isfield(args,"BinWidth");
             if(isBinwidth)
                 nbinwidth = numel(args.BinWidth);
                 isBinwidth1 = nbinwidth == 1;
-                assert(nbinwidth == ntrans | isBinwidth1, "No of bin widths provided and no of Tcspc objects do not match")
+                assert(nbinwidth == ntrans | isBinwidth1,'MATLAB:assertion:failed', "No of bin widths provided and no of Tcspc objects do not match")
             end
 
             isPol = isfield(args,"PolarizationAngle");
             if(isPol)
                 npolang = numel(args.PolarizationAngle);
                 isPol1 = npolang == 1;
-                assert(npolang == ntrans | isPol1, "No of pol angles provided and no of Tcspc objects do not match")
+                assert(npolang == ntrans | isPol1,'MATLAB:assertion:failed', "No of pol angles provided and no of Tcspc objects do not match")
             end
 
             for i = 1:ntrans
@@ -147,7 +147,7 @@ classdef TcspcData
                 switch prop{i}
                     case "Data" 
                         uniquebins = unique(vertcat(multiTcspc.NumberOfBins));
-                        assert(isscalar(uniquebins),"Number of bins not the same in all curves");
+                        assert(isscalar(uniquebins),'MATLAB:assertion:failed',"Number of bins not the same in all curves");
                         varargout{i} = horzcat(multiTcspc.Data);
                     otherwise
                         varargout{i} = vertcat(multiTcspc.(prop{i}));
