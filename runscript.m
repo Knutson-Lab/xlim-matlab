@@ -18,7 +18,7 @@ runner.addPlugin(p2)
 import matlab.unittest.plugins.CodeCoveragePlugin
 import matlab.unittest.plugins.codecoverage.CoberturaFormat
 %sourceCodeFile = "xlim-ops-matlab/src/@TcspcData/TcspcData.m";
-sourceCodeFolder = "xlim-matlab";
+sourceCodeFolder = pwd;
 reportFile = "cobertura.xml";
 reportFormat = CoberturaFormat(reportFile);
 p3 = CodeCoveragePlugin.forFolder(sourceCodeFolder,"Producing",reportFormat,"IncludingSubfolders",true);
