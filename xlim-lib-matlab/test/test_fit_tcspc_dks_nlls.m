@@ -15,7 +15,7 @@
 
 classdef test_fit_tcspc_dks_nlls < matlab.unittest.TestCase
     methods(Test)
-        function test_NumberOfBins(testCase)
+        function test_firsttry(testCase)
 
             irf = sim_tcspc_irfs(0.047,zeros(256,1),[20000, 0.8, 0.25, 0, 0],1);
             trans = horzcat(sim_tcspc_dks(0.047,irf,zeros(256,1),[200000, 2, 100000, 1, 0, 0, 0, 0],2,10),...

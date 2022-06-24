@@ -1,6 +1,7 @@
 suite2 = testsuite("xlim-ops-matlab/test");
 suite1 = testsuite("xlim-lib-matlab/test");
 addpath(genpath('xlim-ops-matlab'))
+addpath(genpath('xlim-lib-matlab'))
 
 import matlab.unittest.TestRunner
 runner = TestRunner.withTextOutput("OutputDetail",3);
