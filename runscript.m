@@ -26,7 +26,7 @@ p3 = CodeCoveragePlugin.forFolder(sourceCodeFolder,"Producing",reportFormat,"Inc
 runner.addPlugin(p3)
 
 runner.run(suite1);
-runner.run(suite2);
+%runner.run(suite2);
 
 %     sourceCodeFolder = "xlim-ops-matlab/src";
 %     reportFile = "cobertura.xml";
