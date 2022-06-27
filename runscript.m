@@ -1,5 +1,7 @@
-suite = testsuite("xlim-ops-matlab/test");
+
+suite = testsuite({'tests/ops-tests', 'tests/lib-tests'});
 addpath(genpath('xlim-ops-matlab'))
+addpath(genpath('xlim-lib-matlab'))
 
 import matlab.unittest.TestRunner
 runner = TestRunner.withTextOutput("OutputDetail",3);
@@ -16,11 +18,19 @@ runner.addPlugin(p2)
 
 import matlab.unittest.plugins.CodeCoveragePlugin
 import matlab.unittest.plugins.codecoverage.CoberturaFormat
-%sourceCodeFile = "xlim-ops-matlab/src/@TcspcData/TcspcData.m";
-sourceCodeFolder = "xlim-ops-matlab/src";
+sourceCodeFolder = pwd;
 reportFile = "cobertura.xml";
 reportFormat = CoberturaFormat(reportFile);
 p3 = CodeCoveragePlugin.forFolder(sourceCodeFolder,"Producing",reportFormat,"IncludingSubfolders",true);
 runner.addPlugin(p3)
 
-results = runner.run(suite);
+runner.run(suite);
+
+
+%     sourceCodeFolder = "xlim-ops-matlab/src";
+%     reportFile = "cobertura.xml";
+%     reportFormat = CoberturaFormat(reportFile);
+%     p3 = CodeCoveragePlugin.forFolder(sourceCodeFolder,"Producing",reportFormat,"IncludingSubfolders",true);
+%     runner.addPlugin(p3)
+%     
+%     runner.run(suite2);
