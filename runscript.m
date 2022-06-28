@@ -1,5 +1,5 @@
 
-suite = testsuite({'tests/ops-tests', 'tests/lib-tests'});
+suite = testsuite({'tests/lib-tests','tests/ops-tests'});
 addpath(genpath('xlim-ops-matlab'))
 addpath(genpath('xlim-lib-matlab'))
 
