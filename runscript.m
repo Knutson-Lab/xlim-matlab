@@ -26,7 +26,6 @@ runner.addPlugin(p3)
 
 runner.run(suite);
 
-
 %     sourceCodeFolder = "xlim-ops-matlab/src";
 %     reportFile = "cobertura.xml";
 %     reportFormat = CoberturaFormat(reportFile);
