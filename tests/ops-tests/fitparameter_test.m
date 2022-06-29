@@ -1,5 +1,8 @@
 classdef fitparameter_test < matlab.unittest.TestCase
     methods(Test)
+        function test_FixedLinkedLogicalError(testCase)
+            testCase.verifyError(@()FitParameter("Value",2.5,"Fixed","a","Linked","b"),'MATLAB:validation:UnableToConvert')
+        end
         function test_ValueError(testCase)
             testCase.verifyError(@()FitParameter("Value","a","Fixed",0,"Linked",0),'MATLAB:validators:mustBeNumeric')
         end
