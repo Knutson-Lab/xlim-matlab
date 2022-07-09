@@ -15,7 +15,7 @@ classdef tcspcinstrument_test < matlab.unittest.TestCase
             data100 = data100.multiSet("Data",ones(100),"BinWidth",0.5*ones(100,1),"PolarizationAngle", 44.7);
             irf1000(1000) = TcspcInstrument;
 
-            testCase.assertError(@()irf1000.multiSet("Data",data100,"ReferenceLifetime",2),'MATLAB:assertion:failed')
+            testCase.assertError(@()irf1000.multiSet("Data",data100,"ReferenceLifetime",2),'TcspcInstrument:multiSet:DataSize')
         end
         function test_multiGet_getIrfData(testCase)
             data1000(1000) = TcspcData;

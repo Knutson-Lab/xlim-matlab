@@ -60,14 +60,14 @@ classdef TcspcInstrument
             if(isData)
                 ndatacurves = numel(args.Data);
                 isData1 = ndatacurves == 1;
-                assert(ndatacurves == nirf || isData1,'MATLAB:assertion:failed', "No of irfs and no of TcspcInstrument objects do not match")
+                assert(ndatacurves == nirf || isData1,'TcspcInstrument:multiSet:DataSize', "No of irfs and no of TcspcInstrument objects do not match")
             end
 
             isRefLife = isfield(args,"ReferenceLifetime");
             if(isRefLife)
                 nreflife = numel(args.ReferenceLifetime);
                 isRefLife1 = nreflife == 1;
-                assert(nreflife == nirf || isRefLife1,'MATLAB:assertion:failed', "No of reference lifetimes provided and no of TcspcInstrument objects do not match")
+                assert(nreflife == nirf || isRefLife1,'TcspcInstrumenyt:multiSet:RefLifetimeSize', "No of reference lifetimes provided and no of TcspcInstrument objects do not match")
             end
 
             for i = 1:nirf
