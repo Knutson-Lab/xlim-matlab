@@ -16,7 +16,7 @@ classdef fitparameter_test < matlab.unittest.TestCase
         end
         function test_multiSetLinkedError(testCase)
             param100(100)=FitParameter;
-            testCase.verifyError(@()param100.multiSet("Value",ones(100,1),"Fixed",1,"Linked",[0,1]),'MATLAB:assertion:failed')
+            testCase.verifyError(@()param100.multiSet("Value",ones(100,1),"Fixed",1,"Linked",[0,1]),'FitParameter:multiSet:LinkedSize')
         end
         function test_multiGet_getValue(testCase)
             param100(100)=FitParameter;

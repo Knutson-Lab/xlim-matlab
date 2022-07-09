@@ -72,21 +72,21 @@ classdef FitParameter
             if(isValue)
                 nvalue = numel(args.Value);
                 isValue1 = nvalue == 1;
-                assert(nvalue == nparam | isValue1,'MATLAB:assertion:failed', "No of values provided and no of FitParameter objects do not match")
+                assert(nvalue == nparam | isValue1,'FitParameter:multiSet:ValueSize', "No of values provided and no of FitParameter objects do not match")
             end
 
             isFixed = isfield(args,"Fixed");
             if(isFixed)
                 nfixed = numel(args.Fixed);
                 isFixed1 = nfixed == 1;
-                assert(nfixed == nparam | isFixed1,'MATLAB:assertion:failed', "No of fixed booleans provided and no of FitParameter objects do not match")
+                assert(nfixed == nparam | isFixed1,'FitParameter:multiSet:FixedSize', "No of fixed booleans provided and no of FitParameter objects do not match")
             end   
 
             isLinked = isfield(args,"Linked");
             if(isLinked)
                 nlinked = numel(args.Linked);
                 isLinked1 = nlinked == 1;
-                assert(nlinked == nparam | isLinked1,'MATLAB:assertion:failed', "No of linked booleans provided and no of FitParameter objects do not match")
+                assert(nlinked == nparam | isLinked1,'FitParameter:multiSet:LinkedSize', "No of linked booleans provided and no of FitParameter objects do not match")
             end  
 
             for i = 1:nparam
