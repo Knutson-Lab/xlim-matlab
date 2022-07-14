@@ -4,7 +4,7 @@ classdef scalarparameterbounds_test < matlab.unittest.TestCase
             testCase.assertError(@()ScalarParameterBounds([1,5,3],[4,2,6]),'ScalarParameterBounds:constructor:ValueOfBounds')
         end  
         function test_boundSizeError(testCase)
-            testCase.assertError(@()ScalarParameterBounds([1,2,3],[4,5]),'MATLAB:sizeDimensionsMustMatch')
+            testCase.assertError(@()ScalarParameterBounds([1,2,3],[4,6]),'MATLAB:sizeDimensionsMustMatch')
         end 
         function test_multiGetLowerBound(testCase)
             bounds=ScalarParameterBounds([1,2,3],5);
