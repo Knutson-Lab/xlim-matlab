@@ -111,7 +111,7 @@ classdef BoundaryConstraints
                         try 
                             varargout{i} = vertcat(multibound.(prop{i}));
                         catch 
-                            error("Some Linear Vectors are not of the same length")
+                            error('BoundaryConstraints:multiGet:LinearVectorSizes',"Some Linear Vectors are not of the same length")
                         end 
                     otherwise
                         varargout{i} = vertcat(multibound.(prop{i}));
@@ -136,42 +136,42 @@ classdef BoundaryConstraints
             if(isscalarb)
                 nscalarb = numel(args.ScalarBounds);
                 isscalarb1 = nscalarb == 1;
-                assert(nscalarb == nbounds || isscalarb1, "No of ScalarBounds and no of BoundaryConstraint objects do not match")
+                assert(nscalarb == nbounds || isscalarb1,'BoundaryConstraints:multiSet:NoofScalarBounds',"No of ScalarBounds and no of BoundaryConstraint objects do not match")
             end
 
             isLinInVec = isfield(args,"LinearInequalityVector");
             if(isLinInVec)
                 nlininvec = size(args.LinearInequalityVector,1);
                 islininvec1 = nlininvec == 1;
-                assert(nlininvec == nbounds || islininvec1, "No of LinearInequalityVectors and no of BoundaryConstraint objects do not match")
+                assert(nlininvec == nbounds || islininvec1,'BoundaryConstraints:multiSet:NoofLinearInequalityVectors',"No of LinearInequalityVectors and no of BoundaryConstraint objects do not match")
             end
 
             isLinEqVec = isfield(args,"LinearEqualityVector");
             if(isLinEqVec)
                 nlineqvec = size(args.LinearEqualityVector,1);
                 islineqvec1 = nlineqvec == 1;
-                assert(nlineqvec == nbounds || islineqvec1, "No of LinearEqualityVectors and no of BoundaryConstraint objects do not match")
+                assert(nlineqvec == nbounds || islineqvec1,'BoundaryConstraints:multiSet:NoofLinearEqualityVectors',"No of LinearEqualityVectors and no of BoundaryConstraint objects do not match")
             end
 
             isLinInScal = isfield(args,"LinearInequalityScalar");
             if(isLinInScal)
                 nlininscal = numel(args.LinearInequalityScalar);
                 islininscal1 = nlininscal == 1;
-                assert(nlininscal == nbounds || islininscal1, "No of LinearInequalityScalars and no of BoundaryConstraint objects do not match")
+                assert(nlininscal == nbounds || islininscal1,'BoundaryConstraints:multiSet:NoofLinearInequalityScalars',"No of LinearInequalityScalars and no of BoundaryConstraint objects do not match")
             end
 
             isLinEqScal = isfield(args,"LinearEqualityScalar");
             if(isLinEqScal)
                 nlineqscal = numel(args.LinearEqualityScalar);
                 islineqscal1 = nlineqscal == 1;
-                assert(nlineqscal == nbounds || islineqscal1, "No of LinearEqualityScalars and no of BoundaryConstraint objects do not match")
+                assert(nlineqscal == nbounds || islineqscal1,'BoundaryConstraints:multiSet:NoofLinearEqualityScalars',"No of LinearEqualityScalars and no of BoundaryConstraint objects do not match")
             end
 
             isnonlin = isfield(args,"NonLinearConstraints");
             if(isnonlin)
                 nnonlin = numel(args.NonLinearConstraints);
                 isnonlin1 = nnonlin == 1;
-                assert(nnonlin == nbounds || isnonlin1, "No of NonLinearConstraints provided and no of BoundaryConstraint objects do not match")
+                assert(nnonlin == nbounds || isnonlin1,'BoundaryConstraints:multiSet:NoofNonlinearConstraints',"No of NonLinearConstraints provided and no of BoundaryConstraint objects do not match")
             end
 
             for i = 1:nbounds
