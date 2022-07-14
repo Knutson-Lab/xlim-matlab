@@ -23,9 +23,9 @@ classdef ScalarParameterBounds
                 bounds(1:noofBounds) = ScalarParameterBounds;
 
                 if(~isempty(lb) && ~isempty(ub))
-                    assert(all(lb <= ub),"Lower bounds must be less than or equal to corresponding upper bounds")
+                    assert(all(lb <= ub),'ScalarParameterBounds:constructor:ValueOfBounds',"Lower bounds must be less than or equal to corresponding upper bounds")
                     if(nooflb>1 && noofub>1)
-                        assert(nooflb==noofub,"No of lower bounds and upper bounds provided not equal")   
+                        assert(nooflb==noofub,'ScalarParameterBounds:constructor:NoofBounds',"No of lower bounds and upper bounds provided not equal")   
                     end
                 end 
 
