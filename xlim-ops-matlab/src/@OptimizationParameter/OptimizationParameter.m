@@ -12,7 +12,7 @@ classdef OptimizationParameter
         function param = OptimizationParameter(val,const)
             % OPTIMIZATIONPARAMETER
             arguments
-                val (:,1) FitParameter
+                val (:,1) FitParameter = FitParameter();
                 const (:,1) BoundaryConstraints = BoundaryConstraints()
             end
             if(nargin>1)
@@ -58,7 +58,6 @@ classdef OptimizationParameter
                     assert(checklower,"Some Value is not between ScalarBounds")
                 end    
 
-                param(1:noofval) = OptimizationParameter; 
                 for i=1:noofval
                     param(i).Value = val(i);
                     if(noofconst==1)

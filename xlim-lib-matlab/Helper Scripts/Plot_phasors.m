@@ -1,15 +1,11 @@
-data = importdata("SIM2/pest.txt");
-fileID= fopen('Simulation_Parameters.txt');
-W = importdata('Simulation_Parameters.txt');
-%      W = fscanf(fileID, '%s');
-% end
-fclose(fileID);
+data = importdata("C:\Users\qazisd\OneDrive - National Institutes of Health\qazisd\tfitz-tconn-presentation\l410\pest.txt");
+
 GD = data(1,1);
 SD = data(1,2);
 GDf = data(2,1);
 SDf = data(2,2);
 th = linspace(0, pi, 100);
-R = 1;  %or whatever radius you want
+R = 0.5;  %or whatever radius you want
 x = R*cos(th);
 y = R*sin(th);
 plot(x,y);
